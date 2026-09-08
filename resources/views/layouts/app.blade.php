@@ -23,7 +23,7 @@
 <footer class="site-footer">
     <div class="container footer-inner">
         <span>night notes. · 2026</span>
-        <span><strong>ФИО СТУДЕНТА</strong> · <strong>ГРУППА</strong></span>
+        <span><strong>Орешкин Ярослав Сергеевич</strong> · <strong>251-3210</strong></span>
     </div>
 </footer>
 </body>
