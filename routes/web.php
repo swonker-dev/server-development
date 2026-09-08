@@ -12,9 +12,9 @@ Route::get('/about', function () {
 
 Route::get('/contacts', function () {
     $contacts = [
-        ['name' => 'Email', 'value' => 'student@example.com', 'href' => 'mailto:student@example.com'],
-        ['name' => 'Telegram', 'value' => '@username', 'href' => 'https://t.me/username'],
-        ['name' => 'GitHub', 'value' => 'github.com/username', 'href' => 'https://github.com/username'],
+        ['name' => 'Email', 'value' => 'shadowir265@gmail.com', 'href' => 'mailto:shadowir265@gmail.com'],
+        ['name' => 'Telegram', 'value' => '@swonker', 'href' => 'https://t.me/swonker'],
+        ['name' => 'GitHub', 'value' => 'github.com/swonker-dev', 'href' => 'https://github.com/swonker-dev'],
     ];
 
     return view('contacts', ['contacts' => $contacts]);
