@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "title": "Golden Hour",
+        "date": "01.09.2026",
+        "tag": "архитектура",
+        "description": "Тёплый закатный свет, открытая площадь и спокойный ритм вечернего города.",
+        "preview_image": "images/golden-hour-preview.jpg",
+        "full_image": "images/golden-hour-full.jpg"
+    },
+    {
+        "id": 2,
+        "title": "Blue Evening",
+        "date": "03.09.2026",
+        "tag": "ночной город",
+        "description": "Ночной кадр с мягким светом, движением машин и архитектурой.",
+        "preview_image": "images/blue-evening-preview.jpg",
+        "full_image": "images/blue-evening-full.jpg"
+    },
+    {
+        "id": 3,
+        "title": "Studio Silence",
+        "date": "05.09.2026",
+        "tag": "музыка",
+        "description": "Тихая студия, аппаратура и настроение рабочего процесса, из которого рождается звук.",
+        "preview_image": "images/studio-silence-preview.jpg",
+        "full_image": "images/studio-silence-full.jpg"
+    }
+]
