@@ -140,3 +140,58 @@ h1 {
     .header-inner { padding-block: 14px; }
     .hero, .page-hero { padding-top: 52px; }
 }
+
+.auth-form {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.form-group input:focus {
+    border-color: var(--accent);
+}
+
+.form-error {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #e28b8b;
+}
+
+.form-button {
+    width: 100%;
+    padding: 13px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--text);
+    color: var(--bg);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-button:hover {
+    opacity: 0.9;
+}

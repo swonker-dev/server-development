@@ -14,6 +14,7 @@
             <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Главная</a>
             <a class="{{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">О нас</a>
             <a class="{{ request()->routeIs('contacts') ? 'active' : '' }}" href="{{ route('contacts') }}">Контакты</a>
+            <a class="{{ request()->routeIs('signin*') ? 'active' : '' }}" href="{{ route('signin') }}">Регистрация</a>
         </nav>
     </div>
 </header>
