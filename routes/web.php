@@ -25,10 +25,28 @@ Route::get('/galery/{id}', [MainController::class, 'galery'])
     ->whereNumber('id')
     ->name('galery');
 
-Route::get('/signin', [AuthController::class, 'create'])
-    ->name('signin');
+    Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
 
-Route::post('/signin', [AuthController::class, 'registration'])
-    ->name('signin.registration');
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.store');
+
+
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.store');
+
+
+Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('articles', ArticleController::class);
+
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
+
+});
+
+
+

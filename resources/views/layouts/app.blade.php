@@ -14,8 +14,42 @@
             <a class="{{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Главная</a>
             <a class="{{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">О нас</a>
             <a class="{{ request()->routeIs('contacts') ? 'active' : '' }}" href="{{ route('contacts') }}">Контакты</a>
-            <a class="{{ request()->routeIs('articles.*') ? 'active' : '' }}" href="{{ route('articles.index') }}">Новости</a>
-            <a class="{{ request()->routeIs('signin*') ? 'active' : '' }}" href="{{ route('signin') }}">Регистрация</a>
+            @auth
+
+            <a class="{{ request()->routeIs('articles.*') ? 'active' : '' }}"
+               href="{{ route('articles.index') }}">
+                Новости
+            </a>
+
+            <span class="nav-user">
+                {{ auth()->user()->name }}
+            </span>
+
+            <form class="nav-logout"
+                  action="{{ route('logout') }}"
+                  method="POST">
+
+                @csrf
+
+                <button type="submit">
+                    Выйти
+                </button>
+
+            </form>
+
+        @else
+
+            <a class="{{ request()->routeIs('register*') ? 'active' : '' }}"
+               href="{{ route('register') }}">
+                Регистрация
+            </a>
+
+            <a class="{{ request()->routeIs('login*') ? 'active' : '' }}"
+               href="{{ route('login') }}">
+                Войти
+            </a>
+
+        @endauth
         </nav>
     </div>
 </header>

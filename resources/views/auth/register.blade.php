@@ -5,18 +5,19 @@
 @section('content')
 <section class="page-hero">
     <div class="container narrow">
-        <span class="kicker">Регистрация</span>
-        <h1>Создать аккаунт</h1>
+        <span class="kicker">Аккаунт</span>
+        <h1>Регистрация</h1>
         <p class="lead">
-            Заполните форму, чтобы зарегистрироваться.
+            Создайте аккаунт, чтобы получить доступ к новостям.
         </p>
     </div>
 </section>
 
 <section class="section">
     <div class="container narrow">
+
         <form class="auth-form"
-              action="{{ route('signin.registration') }}"
+              action="{{ route('register.store') }}"
               method="POST">
 
             @csrf
@@ -71,7 +72,9 @@
             <button class="form-button" type="submit">
                 Зарегистрироваться
             </button>
+
         </form>
+
     </div>
 </section>
 @endsection

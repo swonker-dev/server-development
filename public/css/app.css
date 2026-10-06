@@ -278,3 +278,30 @@ h1 {
 .page-info {
     color: var(--muted);
 }
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.nav-logout {
+    margin: 0;
+}
+
+.nav-logout button {
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    cursor: pointer;
+}
+
+.nav-logout button:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
