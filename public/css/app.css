@@ -195,3 +195,86 @@ h1 {
 .form-button:hover {
     opacity: 0.9;
 }
+
+.form-group textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    resize: vertical;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+}
+
+.form-group textarea:focus {
+    border-color: var(--accent);
+}
+
+.article-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.article-actions form {
+    margin: 0;
+}
+
+.article-button {
+    display: inline-block;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--text);
+    color: var(--bg);
+    text-decoration: none;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.article-button.secondary {
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+.article-button.danger {
+    background: #8f4141;
+    color: white;
+}
+
+.success-message {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.page-link {
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.page-link.disabled {
+    opacity: 0.4;
+}
+
+.page-info {
+    color: var(--muted);
+}
