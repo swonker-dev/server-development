@@ -16,6 +16,15 @@
             <a class="{{ request()->routeIs('contacts') ? 'active' : '' }}" href="{{ route('contacts') }}">Контакты</a>
             @auth
 
+            @can('create', \App\Article::class)
+
+                <a class="{{ request()->routeIs('articles.create') ? 'active' : '' }}"
+                   href="{{ route('articles.create') }}">
+                    Создать новость
+                </a>
+            
+            @endcan
+
             <a class="{{ request()->routeIs('articles.*') ? 'active' : '' }}"
                href="{{ route('articles.index') }}">
                 Новости

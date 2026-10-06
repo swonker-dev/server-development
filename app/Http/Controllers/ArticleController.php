@@ -4,25 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ArticleController extends Controller
 {
     public function index()
-    {
-        $articles = Article::latest()->paginate(5);
+{
+    Gate::authorize('viewAny', Article::class);
 
-        return view('articles.index', [
-            'articles' => $articles,
-        ]);
-    }
+    $articles = Article::latest()->paginate(5);
+
+    return view('articles.index', [
+        'articles' => $articles,
+    ]);
+}
 
     public function create()
     {
+        Gate::authorize('create', Article::class);
+
         return view('articles.create');
     }
 
     public function store(Request $request)
     {
+        Gate::authorize('create', Article::class);
         $validated = $request->validate([
             'title' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['required', 'string', 'min:10'],
@@ -44,6 +50,12 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
+        Gate::authorize('view', $article);
+
+        $article->load([
+            'comments.user',
+        ]);
+
         return view('articles.show', [
             'article' => $article,
         ]);
@@ -51,6 +63,8 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
+        Gate::authorize('update', $article);
+
         return view('articles.edit', [
             'article' => $article,
         ]);
@@ -58,6 +72,7 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $article)
     {
+        Gate::authorize('update', $article);
         $validated = $request->validate([
             'title' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['required', 'string', 'min:10'],
@@ -79,8 +94,10 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
+        Gate::authorize('delete', $article);
+    
         $article->delete();
-
+    
         return redirect()
             ->route('articles.index')
             ->with('success', 'Статья удалена.');

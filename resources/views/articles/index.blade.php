@@ -11,10 +11,14 @@
             Здесь можно просматривать и управлять статьями.
         </p>
 
-        <a class="article-button"
-           href="{{ route('articles.create') }}">
-            + Добавить статью
-        </a>
+        @can('create', \App\Article::class)
+
+            <a class="article-button"
+               href="{{ route('articles.create') }}">
+                + Добавить статью
+            </a>
+
+        @endcan
     </div>
 </section>
 
@@ -44,24 +48,32 @@
                         Открыть
                     </a>
 
-                    <a class="article-button secondary"
-                       href="{{ route('articles.edit', $article) }}">
-                        Изменить
-                    </a>
+                    @can('update', $article)
 
-                    <form
-                        action="{{ route('articles.destroy', $article) }}"
-                        method="POST"
-                        onsubmit="return confirm('Удалить статью?')"
-                    >
-                        @csrf
-                        @method('DELETE')
+                        <a class="article-button secondary"
+                           href="{{ route('articles.edit', $article) }}">
+                            Изменить
+                        </a>
 
-                        <button class="article-button danger"
-                                type="submit">
-                            Удалить
-                        </button>
-                    </form>
+                    @endcan
+
+                    @can('delete', $article)
+
+                        <form
+                            action="{{ route('articles.destroy', $article) }}"
+                            method="POST"
+                            onsubmit="return confirm('Удалить статью?')"
+                        >
+                            @csrf
+                            @method('DELETE')
+                    
+                            <button class="article-button danger"
+                                    type="submit">
+                                Удалить
+                            </button>
+                        </form>
+                    
+                    @endcan
                 </div>
             </article>
 
