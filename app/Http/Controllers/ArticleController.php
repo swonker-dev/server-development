@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use App\Mail\ArticleCreated;
+use App\Jobs\VeryLongJob;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class ArticleController extends Controller
 {
@@ -52,28 +51,18 @@ class ArticleController extends Controller
             $query->where('name', 'moderator');
         })->get();
 
-        $notificationFailed = $moderators->isEmpty();
+        $queueFailed = $moderators->isEmpty();
 
-        if (config('mail.default') === 'smtp' && (
-            blank(config('mail.mailers.smtp.username')) ||
-            blank(config('mail.mailers.smtp.password'))
-        )) {
-            $notificationFailed = true;
-            Log::warning('Article notification: SMTP credentials are missing.', [
-                'article_id' => $article->id,
-            ]);
-        } else {
-            foreach ($moderators as $moderator) {
-                try {
-                    Mail::to($moderator->email)->send(new ArticleCreated($article));
-                } catch (Exception $exception) {
-                    $notificationFailed = true;
-                    // Do not log SMTP credentials or the contents of the email.
-                    Log::warning('Article notification could not be sent.', [
-                        'article_id' => $article->id,
-                        'exception_type' => get_class($exception),
-                    ]);
-                }
+        foreach ($moderators as $moderator) {
+            try {
+                VeryLongJob::dispatch($article, $moderator)->afterCommit();
+            } catch (Exception $exception) {
+                $queueFailed = true;
+                Log::warning('Article notification could not be queued.', [
+                    'article_id' => $article->id,
+                    'moderator_id' => $moderator->id,
+                    'exception_type' => get_class($exception),
+                ]);
             }
         }
 
@@ -81,8 +70,8 @@ class ArticleController extends Controller
             ->route('articles.index')
             ->with('success', 'Статья создана.');
 
-        if ($notificationFailed) {
-            $response->with('warning', 'Статья сохранена, но не все уведомления модераторам удалось отправить.');
+        if ($queueFailed) {
+            $response->with('warning', 'Статья сохранена, но не все уведомления удалось запланировать.');
         }
 
         return $response;
