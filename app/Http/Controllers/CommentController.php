@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
@@ -43,6 +44,8 @@ class CommentController extends Controller
             'body' => $validated['body'],
         ]);
 
+        Cache::forget('articles.show.'.$article->id);
+
         return back()->with(
             'success',
             'Комментарий отправлен и ожидает модерации.'
@@ -59,6 +62,8 @@ class CommentController extends Controller
 
         abort_unless($approved, 404);
 
+        Cache::forget('articles.show.'.$comment->article_id);
+
         return redirect()->route('comments.moderation')
             ->with('success', 'Комментарий принят и опубликован.');
     }
@@ -73,6 +78,8 @@ class CommentController extends Controller
 
         abort_unless($deleted, 404);
 
+        Cache::forget('articles.show.'.$comment->article_id);
+
         return redirect()->route('comments.moderation')
             ->with('success', 'Комментарий отклонён и удалён.');
     }
@@ -83,6 +90,8 @@ class CommentController extends Controller
         Gate::authorize('delete-comment');
 
         $comment->delete();
+
+        Cache::forget('articles.show.'.$comment->article_id);
 
         return back()->with(
             'success',

@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Notifications\NewArticleNotification;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
@@ -16,16 +18,30 @@ use Illuminate\Support\Facades\Notification;
 
 class ArticleController extends Controller
 {
+    private const PER_PAGE = 5;
+
     public function index()
-{
-    Gate::authorize('viewAny', Article::class);
+    {
+        Gate::authorize('viewAny', Article::class);
 
-    $articles = Article::latest()->paginate(5);
+        $page = Paginator::resolveCurrentPage();
+        $key = 'articles.index.'.$page;
+        $articles = Cache::remember($key, 600, function () use ($page) {
+            return Article::latest()->paginate(self::PER_PAGE, ['*'], 'page', $page);
+        });
 
-    return view('articles.index', [
-        'articles' => $articles,
-    ]);
-}
+        // Pagination links must use the current request's address, not the cached one.
+        $articles->withPath(Paginator::resolveCurrentPath());
+
+        // Only existing pages are retained, so store can forget every cached page.
+        if ($page > $articles->lastPage()) {
+            Cache::forget($key);
+        }
+
+        return view('articles.index', [
+            'articles' => $articles,
+        ]);
+    }
 
     public function create()
     {
@@ -60,6 +76,12 @@ class ArticleController extends Controller
 
             return $article;
         });
+
+        $lastPage = max(1, (int) ceil(Article::count() / self::PER_PAGE));
+
+        for ($page = 1; $page <= $lastPage; $page++) {
+            Cache::forget('articles.index.'.$page);
+        }
 
         $queueFailed = false;
 
@@ -107,11 +129,13 @@ class ArticleController extends Controller
     {
         Gate::authorize('view', $article);
 
-        $article->load([
-            'comments' => function ($query) {
-                $query->where('is_approved', true)->with('user')->oldest('id');
-            },
-        ]);
+        $article = Cache::rememberForever('articles.show.'.$article->id, function () use ($article) {
+            return $article->load([
+                'comments' => function ($query) {
+                    $query->where('is_approved', true)->with('user:id,name')->oldest('id');
+                },
+            ]);
+        });
 
         return view('articles.show', [
             'article' => $article,
@@ -143,6 +167,7 @@ class ArticleController extends Controller
         ]);
 
         $article->update($validated);
+        Cache::flush();
 
         return redirect()
             ->route('articles.index')
@@ -154,6 +179,7 @@ class ArticleController extends Controller
         Gate::authorize('delete', $article);
     
         $article->delete();
+        Cache::flush();
     
         return redirect()
             ->route('articles.index')
