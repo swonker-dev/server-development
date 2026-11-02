@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'night notes.')</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @vite('resources/js/app.js')
 </head>
 <body>
 <header class="site-header">
@@ -71,6 +72,8 @@
 </header>
 
 <main>@yield('content')</main>
+
+<div id="article-notifications"></div>
 
 <footer class="site-footer">
     <div class="container footer-inner">

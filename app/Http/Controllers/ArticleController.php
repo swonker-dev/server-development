@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Events\NewArticleEvent;
 use App\Jobs\VeryLongJob;
 use App\Models\User;
 use Exception;
@@ -47,11 +48,23 @@ class ArticleController extends Controller
 
         $article = Article::create($validated);
 
+        $queueFailed = false;
+
+        try {
+            NewArticleEvent::dispatch($article);
+        } catch (Exception $exception) {
+            $queueFailed = true;
+            Log::warning('Article broadcast could not be queued.', [
+                'article_id' => $article->id,
+                'exception_type' => get_class($exception),
+            ]);
+        }
+
         $moderators = User::whereHas('role', function ($query) {
             $query->where('name', 'moderator');
         })->get();
 
-        $queueFailed = $moderators->isEmpty();
+        $queueFailed = $queueFailed || $moderators->isEmpty();
 
         foreach ($moderators as $moderator) {
             try {
