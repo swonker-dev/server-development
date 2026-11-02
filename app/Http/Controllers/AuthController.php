@@ -75,7 +75,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        $user->tokens()->delete();
+        $user->tokens()->where('name', 'web-auth')->delete();
 
         $token = $user
             ->createToken('web-auth')
@@ -91,7 +91,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         if ($user) {
-            $user->tokens()->delete();
+            $user->tokens()->where('name', 'web-auth')->delete();
         }
 
         Auth::guard('web')->logout();
