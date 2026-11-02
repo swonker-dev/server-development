@@ -43,7 +43,8 @@ Route::post('/login', [AuthController::class, 'login'])
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::resource('articles', ArticleController::class);
+    Route::resource('articles', ArticleController::class)
+        ->middlewareFor('show', 'track.article.views');
 
     Route::post('/notifications/{notification}/open', [NotificationController::class, 'open'])
         ->whereUuid('notification')
