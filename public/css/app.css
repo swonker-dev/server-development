@@ -43,7 +43,7 @@ img { display: block; max-width: 100%; }
     font-family: Georgia, "Times New Roman", serif;
     font-size: 1.15rem;
 }
-.nav { display: flex; gap: 6px; }
+.nav { display: flex; flex-wrap: wrap; gap: 6px; }
 .nav a {
     color: var(--muted);
     text-decoration: none;
@@ -81,6 +81,7 @@ h1 {
 .content-card + .content-card { margin-top: 16px; }
 .content-card h2 { margin-top: 0; font-size: 1.7rem; }
 .content-card p, .content-card li { color: var(--muted); }
+.comment-body { white-space: pre-wrap; overflow-wrap: anywhere; }
 
 .contacts-grid { display: grid; gap: 12px; }
 .contact-card {

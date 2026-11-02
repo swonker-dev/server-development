@@ -93,7 +93,9 @@ class ArticleController extends Controller
         Gate::authorize('view', $article);
 
         $article->load([
-            'comments.user',
+            'comments' => function ($query) {
+                $query->where('is_approved', true)->with('user')->oldest('id');
+            },
         ]);
 
         return view('articles.show', [

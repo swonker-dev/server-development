@@ -39,6 +39,12 @@ class AuthServiceProvider extends ServiceProvider
         });
 
 
+        Gate::define('moderate-comments', function (User $user) {
+            return Response::deny(
+                'Модерировать комментарии может только модератор.'
+            );
+        });
+
         Gate::define('delete-comment', function (User $user) {
             return Response::deny(
                 'Удалять комментарии может только модератор.'

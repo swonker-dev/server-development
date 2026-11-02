@@ -14,6 +14,10 @@ class Comment extends Model
         'body',
     ];
 
+    protected $casts = [
+        'is_approved' => 'boolean',
+    ];
+
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);

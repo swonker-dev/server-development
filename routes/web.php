@@ -51,6 +51,15 @@ Route::middleware('auth:sanctum')->group(function () {
         '/articles/{article}/comments',
         [CommentController::class, 'store']
     )->name('comments.store');
+
+    Route::get('/comments/moderation', [CommentController::class, 'index'])
+        ->name('comments.moderation');
+
+    Route::patch('/comments/{comment}/approve', [CommentController::class, 'approve'])
+        ->name('comments.approve');
+
+    Route::delete('/comments/{comment}/reject', [CommentController::class, 'reject'])
+        ->name('comments.reject');
     
     
     Route::delete(

@@ -40,10 +40,18 @@
 <section class="section">
     <div class="container narrow">
 
+        @if (session('success'))
+            <div class="success-message" role="status">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="content-card">
             <h2>Комментарии</h2>
 
             @can('create-comment')
+
+                <p>Комментарий появится на сайте после проверки модератором.</p>
 
                 <form
                     action="{{ route('comments.store', $article) }}"
@@ -88,9 +96,7 @@
                     {{ $comment->user->name }}
                 </span>
 
-                <p>
-                    {{ $comment->body }}
-                </p>
+                <p class="comment-body">{{ $comment->body }}</p>
 
                 @can('delete-comment')
 
@@ -117,7 +123,7 @@
         @empty
 
             <div class="content-card">
-                <p>Комментариев пока нет.</p>
+                <p>Опубликованных комментариев пока нет.</p>
             </div>
 
         @endforelse

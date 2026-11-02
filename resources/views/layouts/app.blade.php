@@ -30,6 +30,13 @@
                 Новости
             </a>
 
+            @can('moderate-comments')
+                <a class="{{ request()->routeIs('comments.*') ? 'active' : '' }}"
+                   href="{{ route('comments.moderation') }}">
+                    Модерация
+                </a>
+            @endcan
+
             <span class="nav-user">
                 {{ auth()->user()->name }}
             </span>
