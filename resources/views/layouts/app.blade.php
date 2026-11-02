@@ -38,6 +38,30 @@
                 </a>
             @endcan
 
+            @if (auth()->user()->role?->name === 'reader')
+                @php($unreadNotifications = auth()->user()->unreadNotifications)
+                <details class="notification-menu">
+                    <summary>
+                        Уведомления
+                        <span class="notification-count">{{ $unreadNotifications->count() }}</span>
+                    </summary>
+                    <div class="notification-dropdown">
+                        <p class="notification-heading">Новые статьи</p>
+                        @forelse ($unreadNotifications as $notification)
+                            <form action="{{ route('notifications.open', $notification->id) }}" method="POST">
+                                @csrf
+                                <button class="notification-link" type="submit">
+                                    {{ $notification->data['title'] }}
+                                    <time datetime="{{ $notification->created_at->toIso8601String() }}">{{ $notification->created_at->format('d.m.Y H:i') }}</time>
+                                </button>
+                            </form>
+                        @empty
+                            <p class="notification-empty">Непрочитанных уведомлений нет.</p>
+                        @endforelse
+                    </div>
+                </details>
+            @endif
+
             <span class="nav-user">
                 {{ auth()->user()->name }}
             </span>

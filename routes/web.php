@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
 
@@ -43,6 +44,10 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('articles', ArticleController::class);
+
+    Route::post('/notifications/{notification}/open', [NotificationController::class, 'open'])
+        ->whereUuid('notification')
+        ->name('notifications.open');
 
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');

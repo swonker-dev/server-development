@@ -6,10 +6,13 @@ use App\Article;
 use App\Events\NewArticleEvent;
 use App\Jobs\VeryLongJob;
 use App\Models\User;
+use App\Notifications\NewArticleNotification;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class ArticleController extends Controller
 {
@@ -46,7 +49,17 @@ class ArticleController extends Controller
             'description.min' => 'Описание должно содержать не менее 10 символов.',
         ]);
 
-        $article = Article::create($validated);
+        $article = DB::transaction(function () use ($validated, $request) {
+            $article = Article::create($validated);
+
+            $readers = User::whereHas('role', function ($query) {
+                $query->where('name', 'reader');
+            })->whereKeyNot($request->user()->id)->get();
+
+            Notification::send($readers, new NewArticleNotification($article));
+
+            return $article;
+        });
 
         $queueFailed = false;
 
