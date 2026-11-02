@@ -31,6 +31,12 @@
             </div>
         @endif
 
+        @if (session('warning'))
+            <div class="success-message warning-message" role="status">
+                {{ session('warning') }}
+            </div>
+        @endif
+
         @forelse ($articles as $article)
 
             <article class="content-card">

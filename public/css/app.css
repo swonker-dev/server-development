@@ -256,6 +256,11 @@ h1 {
     background: var(--surface);
 }
 
+.warning-message {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
 .pagination {
     display: flex;
     align-items: center;
